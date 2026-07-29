@@ -1,0 +1,109 @@
+# csvstat — group-by statistics for ANY csv, straight from the raw file.
+#
+#   csvstat.exe <file.csv> [group_col] [value_col]
+#
+# Columns are 0-based (defaults: 1 and 2). Header rows and bad cells are
+# detected and skipped automatically. Per group: count, sum, mean, min, max —
+# groups sorted by sum, top 25 shown.
+#
+# Build:  python pyalt.py build examples/csvstat.pya -o dist/csvstat.exe
+
+class Agg:
+    count: int
+    total: float
+    lo: float
+    hi: float
+    def add(self, v: float):
+        if self.count == 0:
+            self.lo = v
+            self.hi = v
+        else:
+            self.lo = min(self.lo, v)
+            self.hi = max(self.hi, v)
+        self.count = self.count + 1
+        self.total = self.total + v
+    def mean(self) -> float:
+        return self.total / float(self.count)
+
+def fmt(v: float) -> str:
+    cents = int(v * 100.0 + 0.5)
+    return str(float(cents) / 100.0)
+
+a = args()
+if len(a) == 0:
+    print("csvstat — group-by statistics for a CSV column")
+    print("usage: csvstat <file.csv> [group_col] [value_col]   (0-based)")
+    exit(2)
+
+path = a[0]
+gcol = 1
+vcol = 2
+try:
+    if len(a) > 1:
+        gcol = int(a[1])
+    if len(a) > 2:
+        vcol = int(a[2])
+except:
+    print("ERROR: column arguments must be numbers")
+    exit(2)
+
+if not exists(path):
+    print(f"ERROR: file not found: {path}")
+    exit(1)
+
+groups: dict[str, Agg] = {}
+skipped = 0
+rows = 0
+grand = 0.0
+
+for line in read_lines(path):
+    cells = line.split(",")
+    if len(cells) <= gcol or len(cells) <= vcol:
+        skipped = skipped + 1
+        continue
+    try:
+        v = float(cells[vcol].strip())
+    except:
+        skipped = skipped + 1        # header rows land here
+        continue
+    g = cells[gcol].strip()
+    if g not in groups:
+        groups[g] = Agg(0, 0.0, 0.0, 0.0)
+    groups[g].add(v)
+    rows = rows + 1
+    grand = grand + v
+
+if rows == 0:
+    print("no numeric data found — check the column numbers")
+    exit(1)
+
+print(f"file: {path}  rows: {rows}  skipped: {skipped}  groups: {len(groups)}")
+print("")
+print("group           count        sum       mean        min        max")
+print("----------------------------------------------------------------")
+
+shown: set[str] = set()
+n_show = min(len(groups), 25)
+for i in range(n_show):
+    best = ""
+    best_total = 0.0
+    first = True
+    for g in groups:
+        if g in shown:
+            continue
+        if first or groups[g].total > best_total:
+            best = g
+            best_total = groups[g].total
+            first = False
+    shown.add(best)
+    agg = groups[best]
+    name = best
+    while len(name) < 14:
+        name = name + " "
+    print(name + " " + str(agg.count) + "  " + fmt(agg.total) + "  "
+          + fmt(agg.mean()) + "  " + fmt(agg.lo) + "  " + fmt(agg.hi))
+
+if len(groups) > 25:
+    print(f"... and {len(groups) - 25} more groups")
+print("----------------------------------------------------------------")
+print(f"grand total: {fmt(grand)}")

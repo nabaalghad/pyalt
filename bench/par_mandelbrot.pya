@@ -1,0 +1,38 @@
+# Parallel benchmark: mandelbrot rows across all cores (pyalt-only feature —
+# CPython's GIL cannot do this with threads).
+
+def mandel(cr: float, ci: float, max_iter: int) -> int:
+    zr = 0.0
+    zi = 0.0
+    i = 0
+    while i < max_iter:
+        if zr * zr + zi * zi > 4.0:
+            return i
+        new_zr = zr * zr - zi * zi + cr
+        zi = 2.0 * zr * zi + ci
+        zr = new_zr
+        i = i + 1
+    return max_iter
+
+width = 1200
+height = 800
+
+rows: list[int] = []
+for y0 in range(height):
+    rows.append(0)
+
+t0 = clock()
+parallel for py in range(height):
+    rowsum = 0
+    for px in range(width):
+        cr = -2.0 + 3.0 * float(px) / float(width)
+        ci = -1.2 + 2.4 * float(py) / float(height)
+        rowsum = rowsum + mandel(cr, ci, 100)
+    rows[py] = rowsum
+t1 = clock()
+
+total = 0
+for y in range(height):
+    total = total + rows[y]
+print(f"total={total}")
+print(f"elapsed: {t1 - t0} seconds")

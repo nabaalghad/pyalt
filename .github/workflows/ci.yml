@@ -1,0 +1,54 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  windows:
+    name: Windows (MSVC)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run test suite
+        shell: bash
+        run: |
+          python -m unittest discover -s tests -v 2>&1 | tee test_output.txt
+          exit ${PIPESTATUS[0]}
+      - name: Publish output to run summary
+        if: always()
+        shell: bash
+        run: |
+          echo '## Windows test output (tail)' >> "$GITHUB_STEP_SUMMARY"
+          echo '```'                            >> "$GITHUB_STEP_SUMMARY"
+          tail -n 150 test_output.txt           >> "$GITHUB_STEP_SUMMARY"
+          echo '```'                            >> "$GITHUB_STEP_SUMMARY"
+          grep -E "^(ERROR|FAIL): |^[A-Za-z]+Error|^Assertion" test_output.txt | head -8 | while read -r l; do echo "::error::WIN ${l}"; done || true
+
+  linux-experimental:
+    name: Linux (gcc, experimental)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run test suite
+        shell: bash
+        run: |
+          python -m unittest discover -s tests -v 2>&1 | tee test_output.txt
+          exit ${PIPESTATUS[0]}
+      - name: Publish output to run summary
+        if: always()
+        shell: bash
+        run: |
+          echo '## Linux test output (tail)' >> "$GITHUB_STEP_SUMMARY"
+          echo '```'                          >> "$GITHUB_STEP_SUMMARY"
+          tail -n 150 test_output.txt         >> "$GITHUB_STEP_SUMMARY"
+          echo '```'                          >> "$GITHUB_STEP_SUMMARY"
+          grep -E "^(ERROR|FAIL): |^[A-Za-z]+Error|^Assertion" test_output.txt | head -8 | while read -r l; do echo "::error::LINUX ${l}"; done || true

@@ -1,0 +1,31 @@
+# 09 — parallel for: all CPU cores, no GIL, data races caught at compile time.
+# Run:  python pyalt.py run examples/09_parallel.pya
+# Try:  set PYA_THREADS=1 to compare single-threaded timing.
+
+def work(n: int) -> int:
+    # a deliberately CPU-heavy function (collatz steps)
+    steps = 0
+    v = n
+    while v != 1:
+        if v % 2 == 0:
+            v = v // 2
+        else:
+            v = 3 * v + 1
+        steps = steps + 1
+    return steps
+
+n = 200000
+out: list[int] = []
+for i in range(n):
+    out.append(0)
+
+t0 = clock()
+parallel for i in range(n):
+    out[i] = work(i + 1)      # results go into distinct list slots
+t1 = clock()
+
+total = 0
+for i in range(n):
+    total = total + out[i]
+print(f"sum of steps: {total}")
+print(f"elapsed: {t1 - t0} seconds")

@@ -1,0 +1,23 @@
+# 02 — functions: annotated parameters, inferred returns, recursion
+
+def fib(n: int) -> int:
+    if n < 2:
+        return n
+    return fib(n - 1) + fib(n - 2)
+
+def mean(xs: list[float]):        # return type inferred: float
+    total = 0.0
+    for x in xs:
+        total = total + x
+    return total / float(len(xs))
+
+def clamp(x: float, lo: float, hi: float):
+    if x < lo:
+        return lo
+    if x > hi:
+        return hi
+    return x
+
+print(fib(30))
+print(mean([1.0, 2.0, 3.0, 4.0]))
+print(clamp(1.7, 0.0, 1.0))

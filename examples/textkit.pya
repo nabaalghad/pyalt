@@ -1,0 +1,23 @@
+# textkit — a reusable pyalt library module (imported by 07_modules.pya).
+# Imported modules contain only functions; nothing runs on import.
+
+def clean(s: str) -> str:
+    return s.strip().lower()
+
+def tokenize(line: str) -> list[str]:
+    words: list[str] = []
+    for raw in line.split(" "):
+        w = clean(raw)
+        if len(w) > 0:
+            words.append(w)
+    return words
+
+def frequencies(lines: list[str]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for line in lines:
+        for w in tokenize(line):
+            if w in counts:
+                counts[w] = counts[w] + 1
+            else:
+                counts[w] = 1
+    return counts

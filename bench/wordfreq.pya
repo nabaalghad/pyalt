@@ -1,0 +1,41 @@
+# Benchmark 1: wordfreq — tokenize a large corpus and count word frequencies
+# with a real hash map + stopword set (SPEC §7 #1, v2 logic).
+# Identical logic to wordfreq.py. Result lines must match exactly.
+
+stopwords = ["the", "and", "for", "with", "that", "this", "from", "over",
+             "into", "your", "their", "about", "would", "there", "which"]
+
+t0 = clock()
+stop: set[str] = set()
+for w in stopwords:
+    stop.add(w)
+
+lines = read_lines("data/bench_wordfreq.txt")
+counts: dict[str, int] = {}
+tokens = 0
+stop_hits = 0
+for line in lines:
+    for raw in line.lower().split(" "):
+        word = raw.strip()
+        if len(word) > 0:
+            tokens = tokens + 1
+            if word in stop:
+                stop_hits = stop_hits + 1
+            else:
+                if word in counts:
+                    counts[word] = counts[word] + 1
+                else:
+                    counts[word] = 1
+
+top_word = ""
+top_count = 0
+for w in counts:
+    c = counts[w]
+    if c > top_count:
+        top_word = w
+        top_count = c
+t1 = clock()
+
+print(f"lines={len(lines)} tokens={tokens} stop_hits={stop_hits}")
+print(f"distinct={len(counts)} top={top_word} top_count={top_count}")
+print(f"elapsed: {t1 - t0} seconds")

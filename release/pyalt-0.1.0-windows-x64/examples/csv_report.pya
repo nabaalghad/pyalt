@@ -1,0 +1,69 @@
+# csv_report — a complete Windows-native CLI tool built with pyalt.
+#
+#   csv_report.exe <input.csv> [output.txt]
+#
+# Reads a CSV export (rows: id,category,amount), writes a per-category
+# summary, exits 0 on success / 1 on data errors / 2 on usage errors.
+#
+# Build:  python pyalt.py build examples/csv_report.pya -o csv_report.exe
+
+def money(v: float) -> str:
+    cents = int(v * 100.0 + 0.5)
+    return str(float(cents) / 100.0)
+
+a = args()
+if len(a) == 0:
+    print("csv_report — summarize a CSV of id,category,amount rows")
+    print("usage: csv_report <input.csv> [output.txt]")
+    exit(2)
+
+in_path = a[0]
+out_path = "report.txt"
+if len(a) > 1:
+    out_path = a[1]
+
+if not exists(in_path):
+    print(f"ERROR: file not found: {in_path}")
+    exit(1)
+
+try:
+    rows = read_lines(in_path)
+
+    totals: dict[str, float] = {}
+    counts: dict[str, int] = {}
+    n_bad = 0
+    grand = 0.0
+
+    for row in rows:
+        parts = row.split(",")
+        if len(parts) != 3:
+            n_bad = n_bad + 1
+            continue
+        try:
+            amount = float(parts[2].strip())
+        except:
+            n_bad = n_bad + 1
+            continue
+        cat = parts[1].strip().lower()
+        if cat in totals:
+            totals[cat] = totals[cat] + amount
+            counts[cat] = counts[cat] + 1
+        else:
+            totals[cat] = amount
+            counts[cat] = 1
+        grand = grand + amount
+
+    out = "CATEGORY REPORT: " + in_path + "\n=====================\n"
+    for cat in totals:
+        out = out + cat + ": " + money(totals[cat])
+        out = out + "  (" + str(counts[cat]) + " rows)\n"
+    out = out + "---------------------\n"
+    out = out + "grand total: " + money(grand) + "\n"
+    out = out + "rows read: " + str(len(rows)) + ", skipped: " + str(n_bad) + "\n"
+
+    write_file(out_path, out)
+    print(out)
+    print("wrote " + out_path)
+except as msg:
+    print(f"ERROR: {msg}")
+    exit(1)

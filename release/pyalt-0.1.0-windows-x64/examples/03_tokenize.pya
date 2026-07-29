@@ -1,0 +1,25 @@
+# 03 — the flagship use case: text preprocessing (the GPU-starving glue code)
+# Tokenize lines, filter short/stop words, count what survives.
+
+def tokenize(line: str) -> list[str]:
+    tokens: list[str] = []
+    for raw in line.lower().split(" "):
+        word = raw.strip()
+        if len(word) > 2:
+            tokens.append(word)
+    return tokens
+
+stopwords = ["the", "and", "for", "with", "that"]
+
+lines = read_lines("data/corpus.txt")
+kept = 0
+dropped = 0
+
+for line in lines:
+    for tok in tokenize(line):
+        if tok in stopwords:
+            dropped = dropped + 1
+        else:
+            kept = kept + 1
+
+print(f"kept={kept} dropped={dropped} lines={len(lines)}")

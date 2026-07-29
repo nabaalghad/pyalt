@@ -1,0 +1,32 @@
+# 08 — classes and exceptions.
+# Run:  python pyalt.py run examples/08_classes.pya
+
+class Stats:
+    count: int
+    total: float
+    def add(self, value: float):
+        self.count = self.count + 1
+        self.total = self.total + value
+    def mean(self) -> float:
+        if self.count == 0:
+            raise "mean of empty Stats"
+        return self.total / float(self.count)
+
+s = Stats(0, 0.0)
+for i in range(5):
+    s.add(float(i) * 1.5)
+print(f"count={s.count} total={s.total} mean={s.mean()}")
+
+empty = Stats(0, 0.0)
+try:
+    m = empty.mean()
+    print("not reached")
+except as msg:
+    print(f"caught: {msg}")
+
+# every runtime error is catchable, not just your own raises
+try:
+    xs = [1, 2, 3]
+    print(xs[99])
+except as msg:
+    print(f"caught: {msg}")

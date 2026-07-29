@@ -1,0 +1,33 @@
+# 04 — pure numeric loops: the kind of code where CPython is 100x too slow
+
+def mandel(cr: float, ci: float, max_iter: int) -> int:
+    zr = 0.0
+    zi = 0.0
+    i = 0
+    while i < max_iter:
+        if zr * zr + zi * zi > 4.0:
+            return i
+        new_zr = zr * zr - zi * zi + cr
+        zi = 2.0 * zr * zi + ci
+        zr = new_zr
+        i = i + 1
+    return max_iter
+
+width = 60
+height = 30
+inside = 0
+
+for py in range(height):
+    row = ""
+    for px in range(width):
+        cr = -2.0 + 3.0 * float(px) / float(width)
+        ci = -1.2 + 2.4 * float(py) / float(height)
+        n = mandel(cr, ci, 50)
+        if n == 50:
+            row = row + "#"
+            inside = inside + 1
+        else:
+            row = row + " "
+    print(row)
+
+print(f"points inside: {inside}")

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="380" height="120" viewBox="0 0 380 120">
+  <!-- pyAlt logo: faceted fast-forward mark + wordmark -->
+  <rect x="0" y="0" width="380" height="120" rx="14" fill="#1a1a19"/>
+
+  <g>
+    <polygon points="36,32 72,60 36,60"   fill="#5598e7"/>
+    <polygon points="36,60 72,60 36,88"   fill="#1c5cab"/>
+
+    <polygon points="80,32 116,60 80,60"  fill="#3987e5"/>
+    <polygon points="80,60 116,60 80,88"  fill="#184f95"/>
+
+    <polygon points="124,32 160,60 124,60" fill="#1baf7a"/>
+    <polygon points="124,60 160,60 124,88" fill="#128a61"/>
+  </g>
+
+  <text x="184" y="76" font-family="Cascadia Code, Consolas, ui-monospace, Menlo, monospace"
+        font-size="46" font-weight="700">
+    <tspan fill="#ffffff">py</tspan><tspan fill="#3987e5">Alt</tspan>
+  </text>
+</svg>

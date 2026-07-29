@@ -1,0 +1,28 @@
+# build artifacts
+build/
+__pycache__/
+*.pyc
+*.obj
+*.exe
+.claude
+!release/pyalt-*/bin/pyalt.exe
+
+# generated benchmark data (harness regenerates deterministically)
+data/
+
+# release zips attach to GitHub Releases, not the repo
+release/*.zip
+
+# local outputs
+dist/report*.txt
+dist/*_report.txt
+showdown/*.c
+*.spec
+
+# private publishing notes (keys, release steps) — never push
+*.txt
+/misc/
+
+aim.md
+hello.pya
+*.bat

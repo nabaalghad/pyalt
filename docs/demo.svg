@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="290" viewBox="0 0 880 290" font-family="ui-monospace, Consolas, Menlo, monospace">
+  <!-- animated race replay: bar time-to-fill = measured runtime (x2 real time); labels carry exact numbers -->
+  <rect x="0" y="0" width="880" height="290" rx="10" fill="#1a1a19"/>
+  <rect x="0" y="0" width="880" height="34" rx="10" fill="#242423"/>
+  <rect x="0" y="24" width="880" height="10" fill="#242423"/>
+  <circle cx="22" cy="17" r="6" fill="#e66767"/>
+  <circle cx="42" cy="17" r="6" fill="#c98500"/>
+  <circle cx="62" cy="17" r="6" fill="#199e70"/>
+  <text x="440" y="22" text-anchor="middle" fill="#c3c2b7" font-size="13">pyalt — Monte Carlo backtest, 10,000,000 loop steps</text>
+
+  <!-- typed command -->
+  <clipPath id="typeclip">
+    <rect x="24" y="46" width="0" height="26">
+      <animate attributeName="width" dur="11s" repeatCount="indefinite"
+        values="0;0;640;640" keyTimes="0;0.02;0.14;1"/>
+    </rect>
+  </clipPath>
+  <text x="24" y="64" fill="#ffffff" font-size="15" clip-path="url(#typeclip)">&gt; pyalt run mc_backtest.pya      <tspan fill="#c3c2b7"># same code, three ways</tspan></text>
+
+  <!-- row labels (ink, not series color) -->
+  <text x="24" y="112" fill="#ffffff" font-size="14">Python 3.11</text>
+  <text x="24" y="158" fill="#ffffff" font-size="14">pyalt</text>
+  <text x="24" y="204" fill="#ffffff" font-size="14">pyalt parallel</text>
+
+  <!-- tracks -->
+  <rect x="170" y="98" width="560" height="18" rx="4" fill="#242423"/>
+  <rect x="170" y="144" width="560" height="18" rx="4" fill="#242423"/>
+  <rect x="170" y="190" width="560" height="18" rx="4" fill="#242423"/>
+
+  <!-- bars: fill duration = measured time x2 (Python 3.088s -> 6.0s of animation) -->
+  <rect x="170" y="98" height="18" rx="4" fill="#3987e5" width="0">
+    <animate attributeName="width" dur="11s" repeatCount="indefinite"
+      values="0;0;560;560" keyTimes="0;0.1818;0.7273;1"/>
+  </rect>
+  <rect x="170" y="144" height="18" rx="4" fill="#199e70" width="0">
+    <animate attributeName="width" dur="11s" repeatCount="indefinite"
+      values="0;0;560;560" keyTimes="0;0.1818;0.1905;1"/>
+  </rect>
+  <rect x="170" y="190" height="18" rx="4" fill="#c98500" width="0">
+    <animate attributeName="width" dur="11s" repeatCount="indefinite"
+      values="0;0;560;560" keyTimes="0;0.1818;0.1834;1"/>
+  </rect>
+
+  <!-- finish labels -->
+  <text x="742" y="112" fill="#c3c2b7" font-size="13" opacity="0">3.088 s
+    <animate attributeName="opacity" dur="11s" repeatCount="indefinite"
+      values="0;0;1;1" keyTimes="0;0.7273;0.746;1"/>
+  </text>
+  <text x="742" y="158" fill="#ffffff" font-size="13" font-weight="bold" opacity="0">0.049 s · 62x
+    <animate attributeName="opacity" dur="11s" repeatCount="indefinite"
+      values="0;0;1;1" keyTimes="0;0.1905;0.209;1"/>
+  </text>
+  <text x="742" y="204" fill="#ffffff" font-size="13" font-weight="bold" opacity="0">0.0089 s · 347x
+    <animate attributeName="opacity" dur="11s" repeatCount="indefinite"
+      values="0;0;1;1" keyTimes="0;0.1834;0.202;1"/>
+  </text>
+
+  <!-- "still running..." shimmer on the python row while others are done -->
+  <text x="742" y="112" fill="#c3c2b7" font-size="13" opacity="0">running…
+    <animate attributeName="opacity" dur="11s" repeatCount="indefinite"
+      values="0;0;0.8;0.3;0.8;0.3;0.8;0;0" keyTimes="0;0.21;0.29;0.38;0.47;0.56;0.65;0.7273;1"/>
+  </text>
+
+  <!-- closing line -->
+  <text x="24" y="248" fill="#c3c2b7" font-size="14" opacity="0">byte-identical output in all three · the parallel version changes one word: <tspan fill="#ffffff">for → parallel for</tspan>
+    <animate attributeName="opacity" dur="11s" repeatCount="indefinite"
+      values="0;0;1;1;0" keyTimes="0;0.75;0.77;0.96;1"/>
+  </text>
+  <text x="24" y="272" fill="#6f6e69" font-size="11">race replay at 2x real time · exact measured values shown · examples/mc_backtest*</text>
+</svg>

@@ -1,0 +1,18 @@
+# 05 — self-timing word frequency: the shape of benchmark #1 (wordfreq)
+# Identical logic will exist in bench/wordfreq.py for the CPython showdown.
+
+def count_long_words(path: str) -> int:
+    total = 0
+    for line in read_lines(path):
+        for raw in line.lower().split(" "):
+            word = raw.strip()
+            if len(word) > 4:
+                total = total + 1
+    return total
+
+t0 = clock()
+n = count_long_words("data/corpus.txt")
+t1 = clock()
+
+print(f"long words: {n}")
+print(f"elapsed: {t1 - t0} seconds")

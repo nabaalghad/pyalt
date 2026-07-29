@@ -1,0 +1,33 @@
+# Benchmark 2: csv-parse — CPython side. Identical logic to csvparse.pya.
+import time
+
+t0 = time.perf_counter()
+with open("data/bench_data.csv", encoding="utf-8") as fh:
+    rows = fh.read().splitlines()
+n = 0
+total = 0.0
+alpha_total = 0.0
+alpha_rows = 0
+flagged = 0
+min_v = 1000000.0
+max_v = -1000000.0
+for row in rows:
+    parts = row.split(",")
+    value = float(parts[2])
+    n = n + 1
+    total = total + value
+    if parts[1] == "alpha":
+        alpha_total = alpha_total + value
+        alpha_rows = alpha_rows + 1
+    if parts[3] == "1":
+        flagged = flagged + 1
+    if value < min_v:
+        min_v = value
+    if value > max_v:
+        max_v = value
+t1 = time.perf_counter()
+
+print(f"rows={n} flagged={flagged} alpha_rows={alpha_rows}")
+print(f"total={int(total)} alpha_total={int(alpha_total)}")
+print(f"min={int(min_v * 1000.0)} max={int(max_v * 1000.0)}")
+print(f"elapsed: {t1 - t0} seconds")

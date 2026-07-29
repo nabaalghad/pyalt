@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="180" viewBox="0 0 860 180" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#7a8699"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="860" height="180" rx="12" fill="#0f172a"/>
+  <text x="430" y="34" text-anchor="middle" fill="#e2e8f0" font-size="17" font-weight="600">pyalt: Python-like source → native machine code</text>
+
+  <rect x="28" y="62" width="150" height="62" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="103" y="88" text-anchor="middle" fill="#7dd3fc" font-size="14" font-weight="600">program.pya</text>
+  <text x="103" y="108" text-anchor="middle" fill="#94a3b8" font-size="11">types inferred</text>
+
+  <line x1="182" y1="93" x2="222" y2="93" stroke="#7a8699" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="226" y="62" width="196" height="62" rx="10" fill="#1e293b" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="324" y="84" text-anchor="middle" fill="#c4b5fd" font-size="14" font-weight="600">pyalt compiler</text>
+  <text x="324" y="103" text-anchor="middle" fill="#94a3b8" font-size="11">lex · parse · typecheck</text>
+  <text x="324" y="117" text-anchor="middle" fill="#94a3b8" font-size="11">race-safe parallel · GC runtime</text>
+
+  <line x1="426" y1="93" x2="466" y2="93" stroke="#7a8699" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="470" y="62" width="120" height="62" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+  <text x="530" y="88" text-anchor="middle" fill="#cbd5e1" font-size="14" font-weight="600">C → MSVC</text>
+  <text x="530" y="108" text-anchor="middle" fill="#94a3b8" font-size="11">gcc / clang too</text>
+
+  <line x1="594" y1="93" x2="634" y2="93" stroke="#7a8699" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="638" y="44" width="192" height="44" rx="10" fill="#052e16" stroke="#4ade80" stroke-width="1.5"/>
+  <text x="734" y="66" text-anchor="middle" fill="#86efac" font-size="13" font-weight="600">standalone .exe</text>
+  <text x="734" y="81" text-anchor="middle" fill="#86efac" font-size="11">~200 KB · zero deps</text>
+
+  <rect x="638" y="96" width="192" height="44" rx="10" fill="#172554" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="734" y="118" text-anchor="middle" fill="#93c5fd" font-size="13" font-weight="600">.pyd for Python</text>
+  <text x="734" y="133" text-anchor="middle" fill="#93c5fd" font-size="11">import it like any module</text>
+
+  <text x="430" y="164" text-anchor="middle" fill="#64748b" font-size="12">serial up to 62x vs CPython · parallel for up to 347x — identical results, verified</text>
+</svg>

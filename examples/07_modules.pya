@@ -1,0 +1,16 @@
+# 07 — multi-file programs: import a module, call it qualified.
+# Run:  python pyalt.py run examples/07_modules.pya
+
+import textkit
+
+lines = ["The quick  brown Fox", "the lazy DOG", "quick quick fox"]
+
+counts = textkit.frequencies(lines)
+print(counts)
+
+total = 0
+for w in counts:
+    total = total + counts[w]
+print(f"tokens={total} distinct={len(counts)}")
+
+print(textkit.clean("  HELLO World  "))

@@ -1,0 +1,17 @@
+# 01 — variables, inference, arithmetic, f-strings
+# Everything here is typed at compile time; nothing is checked at runtime.
+
+samples = 1000            # int
+learning_rate = 0.01      # float
+model = "tiny-net"        # str
+verbose = True            # bool
+
+steps = samples * 3
+budget = float(steps) * learning_rate
+
+print(f"model={model} steps={steps} budget={budget}")
+
+if verbose and budget > 20.0:
+    print("warning: large budget")
+else:
+    print("budget ok")

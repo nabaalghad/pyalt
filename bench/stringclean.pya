@@ -1,0 +1,20 @@
+# Benchmark 4: string-clean — strip/lower/replace over many lines (SPEC §7 #4)
+# Identical logic to stringclean.py.
+
+t0 = clock()
+lines = read_lines("data/bench_messy.txt")
+changed = 0
+total_len = 0
+the_lines = 0
+for line in lines:
+    cleaned = line.strip().lower().replace("  ", " ")
+    if cleaned != line:
+        changed = changed + 1
+    total_len = total_len + len(cleaned)
+    if cleaned.startswith("the "):
+        the_lines = the_lines + 1
+t1 = clock()
+
+print(f"lines={len(lines)} changed={changed}")
+print(f"total_len={total_len} the_lines={the_lines}")
+print(f"elapsed: {t1 - t0} seconds")

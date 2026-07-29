@@ -1,0 +1,43 @@
+# fastwords — a pyalt module usable FROM PYTHON.
+#
+#   python pyalt.py buildpy examples/fastwords.pya
+#   >>> import sys; sys.path.insert(0, "build")
+#   >>> import fastwords
+#   >>> fastwords.count_long_words("some big text here", 3)
+#
+# Interop modules contain only functions (no top-level code).
+
+def count_long_words(text: str, min_len: int) -> int:
+    total = 0
+    for line in text.split("\n"):
+        for raw in line.lower().split(" "):
+            word = raw.strip()
+            if len(word) > min_len:
+                total = total + 1
+    return total
+
+def longest_word(text: str) -> str:
+    longest = ""
+    for line in text.split("\n"):
+        for raw in line.lower().split(" "):
+            word = raw.strip()
+            if len(word) > len(longest):
+                longest = word
+    return longest
+
+def count_matches(text: str, targets: list[str]) -> int:
+    hits = 0
+    for line in text.split("\n"):
+        for raw in line.lower().split(" "):
+            word = raw.strip()
+            if word in targets:
+                hits = hits + 1
+    return hits
+
+def word_lengths(line: str) -> list[int]:
+    lengths: list[int] = []
+    for raw in line.split(" "):
+        word = raw.strip()
+        if len(word) > 0:
+            lengths.append(len(word))
+    return lengths
